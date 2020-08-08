@@ -1,4 +1,4 @@
-const { ApolloServer, gql } = require('apollo-server')
+const { ApolloServer, gql, UserInputError } = require('apollo-server')
 const { v4: uuid } = require('uuid')
 
 let authors = [
@@ -91,6 +91,7 @@ const typeDefs = gql`
     bookCount: Int!
   }
   type Book {
+    id: ID!
     title: String!
     published: Int!
     author: String!
