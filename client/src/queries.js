@@ -3,6 +3,7 @@ import { gql } from '@apollo/client'
 export const ALL_AUTHORS = gql`
   query {
     allAuthors {
+      id
       name
       born
       bookCount
@@ -17,6 +18,17 @@ export const ALL_BOOKS = gql`
       title
       author
       published
+    }
+  }
+`
+
+export const NEW_BIRTHYEAR = gql`
+  mutation changeBirthYear($name: String!, $setBornTo: Int!) {
+    editAuthor(name: $name, setBornTo: $setBornTo) {
+      id
+      name
+      born
+      bookCount
     }
   }
 `
