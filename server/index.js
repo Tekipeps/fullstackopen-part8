@@ -87,7 +87,7 @@ const resolvers = {
           return null
         }
         author.born = args.setBornTo
-        author.save()
+        await author.save()
         return author
       } catch (error) {
         throw new UserInputError(error.message, {
