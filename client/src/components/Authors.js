@@ -1,29 +1,29 @@
-import React, { useState } from 'react'
-import { ALL_AUTHORS, NEW_BIRTHYEAR } from '../queries'
-import { useQuery, useMutation } from '@apollo/client'
+import React, { useState } from "react";
+import { ALL_AUTHORS, NEW_BIRTHYEAR } from "../queries";
+import { useQuery, useMutation } from "@apollo/client";
 
 const Authors = (props) => {
-  const result = useQuery(ALL_AUTHORS)
-  const [name, setName] = useState('')
-  const [born, setBorn] = useState('')
+  const result = useQuery(ALL_AUTHORS);
+  const [name, setName] = useState("");
+  const [born, setBorn] = useState("");
 
   const [changeBirthYear] = useMutation(NEW_BIRTHYEAR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
-  })
+  });
 
   if (!props.show) {
-    return null
+    return null;
   }
   if (result.loading) {
-    return <div>loading ...</div>
+    return <div>loading ...</div>;
   }
-  console.log(result)
-  const authors = result.data.allAuthors
+  // console.log(result);
+  const authors = result.data.allAuthors;
 
   const setBirthYear = (event) => {
-    event.preventDefault()
-    changeBirthYear({ variables: { name, setBornTo: Number(born) } })
-  }
+    event.preventDefault();
+    changeBirthYear({ variables: { name, setBornTo: Number(born) } });
+  };
 
   return (
     <div>
@@ -47,7 +47,7 @@ const Authors = (props) => {
       <h2>Set birthyear</h2>
       <form onSubmit={setBirthYear}>
         <div>
-          name{' '}
+          name{" "}
           <select value={name} onChange={({ target }) => setName(target.value)}>
             {authors.map((author) => (
               <option value={author.name} key={author.id}>
@@ -57,7 +57,7 @@ const Authors = (props) => {
           </select>
         </div>
         <div>
-          born{' '}
+          born{" "}
           <input
             type="number"
             value={born}
@@ -67,7 +67,7 @@ const Authors = (props) => {
         <button type="submit">update author</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default Authors
+export default Authors;
