@@ -93,7 +93,6 @@ const resolvers = {
         return findAuthor(books);
       }
       const books = await Book.find({});
-      console.log(findAuthor(books));
       return findAuthor(books);
     },
     allAuthors: () => Author.find({}),
