@@ -10,7 +10,7 @@ const Books = (props) => {
   if (result.loading) {
     return <div>loading ...</div>;
   }
-  console.log(result.data.allBooks);
+  // console.log(result.data.allBooks);
   const books = result.data.allBooks;
 
   return (
