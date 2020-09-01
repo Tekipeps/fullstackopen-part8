@@ -33,7 +33,8 @@ const App = () => {
               onClick={() => {
                 setToken(null);
                 localStorage.clear();
-                client.resetStore();
+                setPage("authors");
+                client.clearStore();
               }}
             >
               <em>logout</em>
