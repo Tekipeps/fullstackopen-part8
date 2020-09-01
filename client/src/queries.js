@@ -69,10 +69,12 @@ export const LOGIN = gql`
   }
 `;
 
-export const ME = gql`
-  query me {
-    username
-    id
-    favoriteGenre
+export const CURRENT_USER = gql`
+  query {
+    me {
+      username
+      id
+      favoriteGenre
+    }
   }
 `;
