@@ -108,12 +108,14 @@ const resolvers = {
       if (!context.currentUser)
         throw new AuthenticationError("Invalid credentials");
       try {
-        let author = await Author.findOne({ name: args.name });
+        let author = await Author.findOne({ name: args.author });
         if (!author) {
           author = new Author({ name: args.author });
           await author.save();
         }
         const book = new Book({ ...args, author });
+
+        await Author.updateOne({ $push: { books: book } });
         const savedBook = await book.save();
 
         pubsub.publish("BOOK_ADDED", { bookAdded: savedBook });
@@ -174,9 +176,7 @@ const resolvers = {
         id: user._id,
       };
       return {
-        value: jwt.sign(userForToken, JWT_SECRET, {
-          expiresIn: "24h",
-        }),
+        value: jwt.sign(userForToken, JWT_SECRET),
       };
     },
   },
@@ -187,8 +187,7 @@ const resolvers = {
   },
   Author: {
     bookCount: async (root, args) => {
-      const author = await Author.findOne({ name: root.name }).select("_id");
-      return Book.find({ author }).countDocuments();
+      return root.books.length;
     },
   },
 };
@@ -197,13 +196,17 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: async ({ req }) => {
-    const auth = req ? req.headers.authorization : null;
-    if (auth && auth.toLowerCase().startsWith("bearer ")) {
-      const decodedToken = jwt.verify(auth.substring(7), JWT_SECRET);
-      const currentUser = await User.findById(decodedToken.id).populate(
-        "friends"
-      );
-      return { currentUser };
+    try {
+      const auth = req ? req.headers.authorization : null;
+      if (auth && auth.toLowerCase().startsWith("bearer ")) {
+        const decodedToken = jwt.verify(auth.substring(7), JWT_SECRET);
+        const currentUser = await User.findById(decodedToken.id).populate(
+          "friends"
+        );
+        return { currentUser };
+      }
+    } catch (error) {
+      throw new AuthenticationError("not authenticated");
     }
   },
 });

@@ -12,7 +12,6 @@ const Books = (props) => {
   if (result.loading) {
     return <div>loading ...</div>;
   }
-  // console.log(result.data.allBooks);
   const books = result.data.allBooks;
 
   books.forEach((book) => {
@@ -26,8 +25,7 @@ const Books = (props) => {
     if (genre === "all") return books;
     return books.filter((book) => book.genres.includes(genre));
   };
-  // console.log(booksToShow());
-  // console.log(genre);
+
   return (
     <div>
       <h2>books</h2>
