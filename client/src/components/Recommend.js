@@ -8,11 +8,9 @@ const Recommend = ({ show, user }) => {
 
   useEffect(() => {
     if (!result.loading) {
-      console.log(result.data);
       const filtered = result.data.allBooks.filter((book) =>
         book.genres.includes(user.favoriteGenre)
       );
-      console.log(filtered);
       setRecommend(filtered);
     }
   }, [result, user.favoriteGenre]);

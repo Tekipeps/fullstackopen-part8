@@ -8,6 +8,18 @@ export const AUTHOR_DETAILS = gql`
     bookCount
   }
 `;
+export const BOOK_DETAILS = gql`
+  fragment BookDetails on Book {
+    id
+    title
+    genres
+    published
+    author {
+      ...AuthorDetails
+    }
+  }
+  ${AUTHOR_DETAILS}
+`;
 
 export const ALL_AUTHORS = gql`
   query {
@@ -84,4 +96,13 @@ export const CURRENT_USER = gql`
       favoriteGenre
     }
   }
+`;
+
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      ...BookDetails
+    }
+  }
+  ${BOOK_DETAILS}
 `;
